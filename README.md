@@ -1,0 +1,1 @@
+# Nakupny-zoznam
