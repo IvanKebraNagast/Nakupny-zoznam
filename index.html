@@ -12,8 +12,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Nákupný zoznam">
-  <!-- (Keď pridáš ikonky, odkomentuj a nechaj cesty) -->
-  <!-- <link rel="apple-touch-icon" href="/Nakupny-zoznam/icons/icon-180.png"> -->
+  <!-- Ak budeš chcieť samostatné PNG ikony, sem pôjde apple-touch-icon -->
 
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -105,7 +104,7 @@
   </div>
 
   <script>
-  // ====== TVOJA LOGIKA (bez zmien) ======
+  // ====== LOGIKA APLIKÁCIE ======
   const addItemForm=document.getElementById('addItemForm');
   const itemInput=document.getElementById('itemInput');
   const shoppingList=document.getElementById('shoppingList');
@@ -143,7 +142,7 @@
   }
   function saveData(){
     try{
-      localStorage.setItem(STORAGE_KEY_ITEMS', JSON.stringify(currentItems));
+      localStorage.setItem(STORAGE_KEY_ITEMS, JSON.stringify(currentItems));
       localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(savedHistory));
     }catch(e){}
   }
