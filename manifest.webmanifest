@@ -1,0 +1,23 @@
+{
+  "name": "Nákupný zoznam",
+  "short_name": "Nákupy",
+  "start_url": "/Nakupny-zoznam/?source=pwa",
+  "scope": "/Nakupny-zoznam/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#10b981",
+  "icons": [
+    {
+      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAABMXPacAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEbUlEQVR4nO3cQQ3DMAxE0Vn//+Z8bmK5YjWio1OYc+4Cwx7nSYn+bpT9V9UQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADw5FmcM8UQ9a+4QvgT6F6jKxV1VX2nWLMbVFWkqoXzQ5VTR1JKSkq5dFVNVFOqcpkzR9V3WSpSx5JylUu7KnXqqb9K9VQv6WZV5bqSkqXNf1PVU0dSSkpKuXRVTVRTqpymaozSk4tFXp+uI/NzBz0KoxekKy5IObxGLMoZzzp/3d3vXbVfS8Z/odH3nZmuudr/tZqS4uxwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAXXcFMAwq6EqG0FjAAAAAElFTkSuQmCC",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAAACXBIWXMAAAsTAAALEwEAmpwYAAAIjElEQVR4nO3dMW4bNxAAUQG0///nmw0TQLoKBSYqKuSGbkn2HjXY2NRP4n4BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAsU2R85aN7uwkZBhz7jCnx3fN0T/kV3B/xmOZQtkVOqkXPyXlFf9d9qz1bq+Sg2f69Lus3il4Se3q+32leV+k6pCblMP1pT7VP9XdcfUQnRar6UdRUuUxVZ7XL+r+fB4PO9XzfJSVW7nYQpB1lK+VmU4h26k+p+F3SdUj1lqWnP7sJKYcs/ym6/16r3rWfFfvZ7PJ3+zLajD4qwpFSlPVJ39U/9dZUvULtEre6zKcNfC9rVZqZmf6rPbLqV0+XKzVI/qpNlX1/1cl+Z+u3l2opPOr3l+S5hrnV/ysZ6X8rfqPtSuovrJ3mcZ1Bqr9SyXdd0BbdJzWvW9TvWrq9pY6qU8lco16V/RdeE+pj/btLq8bmtdYqS9FydGdc0rrzO2+XtrpWvWZVx7Sni/KnzT0+7oTyzNrdqpq9aV5wmp++hmnYfUO6h+Zf+f29r1lfqvcz0qyn4ZUX/m2B3PV+nf1o/S6l3Un1M+dR0M01hqeN0yt/lcqpfzrmfzUu/p/N+07pK5xvjFq+vVV8s6F+W/Rv7r08VP7f1Aq0yXFlqpT0v3qFqp+F+lb7R+2J/3dKTVVJUpq/kNxlm3L/Oe2vw/l2vJH9rb5JynLbnv9saj7V5o/jaWm+o+jmrO27D1P6LrbdUQ4t3dJ6j+I9Rjz36n+6QeUuV9+3P0kKcp9Y5v+3V98dB0KZPVaU9Up34r5XGfqlNs1yEqlE6mv1JqSHfvh6nT/bd9px3z01qkfr5N3Q9XqrvdQ9VmuWjZpKkFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGzNOiUgAbedYAbQ8j/x+5oAAAAASUVORK5CYII=",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
