@@ -123,7 +123,9 @@
     <div id="priceModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center p-4">
         <div class="bg-white p-6 rounded-lg shadow-xl text-center w-full max-w-sm">
             <h3 class="text-xl font-semibold text-gray-800 mb-4">Zadať cenu</h3>
-            <input type="number" id="modalPriceInput" placeholder="Cena (€)" step="0.01" class="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:border-emerald-500 transition duration-200 mb-4">
+            <!-- Zmena z type="number" na type="text" pre podporu matematických operácií -->
+            <input type="text" id="modalPriceInput" placeholder="Cena (napr. 1.19*2+1.09)" class="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:border-emerald-500 transition duration-200 mb-4">
+            <div id="priceError" class="text-sm text-red-500 mb-2 hidden">Nesprávny formát. Použi iba čísla a operátory (+, -, *, /).</div>
             <div class="flex justify-center gap-2">
                 <button id="savePriceBtn" class="flex-grow bg-emerald-500 text-white py-2 px-4 rounded-xl font-semibold hover:bg-emerald-600 transition duration-200">Uložiť</button>
                 <button id="cancelPriceBtn" class="flex-grow bg-slate-200 text-gray-700 py-2 px-4 rounded-xl font-semibold hover:bg-slate-300 transition duration-200">Zrušiť</button>
@@ -167,6 +169,7 @@
         const modalPriceInput = document.getElementById('modalPriceInput');
         const savePriceBtn = document.getElementById('savePriceBtn');
         const cancelPriceBtn = document.getElementById('cancelPriceBtn');
+        const priceError = document.getElementById('priceError');
 
         const receiptModal = document.getElementById('receiptModal');
         const receiptImageInput = document.getElementById('receiptImageInput');
@@ -221,15 +224,12 @@
          */
         function calculateTotal() {
             const total = currentItems.reduce((sum, item) => {
-                if (item.price) {
-                    const price = parseFloat(item.price);
-                    return sum + (isNaN(price) ? 0 : price);
-                }
-                return sum;
+                const price = parseFloat(item.price);
+                return sum + (isNaN(price) ? 0 : price);
             }, 0);
             totalSum.textContent = `Celková suma: €${total.toFixed(2)}`;
         }
-
+        
         /**
          * Vykreslí aktuálny nákupný zoznam.
          */
@@ -375,17 +375,45 @@
          */
         function showPriceModal(index) {
             itemIndexToEdit = index;
+            // Nastaví hodnotu poľa na existujúcu cenu (ak existuje)
             modalPriceInput.value = currentItems[index].price !== null ? currentItems[index].price : '';
+            priceError.classList.add('hidden'); // Skryje chybovú hlášku pri otvorení
             priceModal.classList.remove('hidden');
         }
+
+        /**
+         * Bezpečná funkcia na vyhodnotenie matematického výrazu.
+         * Kontroluje, či výraz obsahuje len povolené znaky, čím sa predchádza nebezpečnému kódu.
+         */
+        function evaluateMathExpression(expression) {
+            // Povolené znaky: čísla, bodka, medzery a operátory +, -, *, /
+            const sanitizedExpression = expression.replace(/,/g, '.'); // Nahradi čiarky bodkami
+            if (/^[0-9\s.+-/*()]+$/.test(sanitizedExpression)) {
+                try {
+                    // Použitie Function() je bezpečnejšie ako eval()
+                    return new Function('return ' + sanitizedExpression)();
+                } catch (e) {
+                    return NaN; // Vráti NaN pri chybe výpočtu
+                }
+            }
+            return NaN; // Vráti NaN ak sú vo výraze nepovolené znaky
+        }
+
 
         /**
          * Uloží cenu z modálneho okna.
          */
         function savePrice() {
             if (itemIndexToEdit !== null) {
-                const newPrice = parseFloat(modalPriceInput.value);
-                currentItems[itemIndexToEdit].price = isNaN(newPrice) ? null : newPrice;
+                const expression = modalPriceInput.value.trim();
+                const newPrice = evaluateMathExpression(expression);
+
+                if (isNaN(newPrice)) {
+                    priceError.classList.remove('hidden');
+                    return;
+                }
+                
+                currentItems[itemIndexToEdit].price = newPrice;
                 saveData();
                 renderCurrentList();
                 hidePriceModal();
@@ -408,10 +436,10 @@
                  const modal = document.createElement('div');
                  modal.className = "fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center p-4";
                  modal.innerHTML = `
-                     <div class="bg-white p-6 rounded-lg shadow-xl text-center">
-                         <p class="text-lg font-semibold text-gray-800 mb-4">Zoznam je prázdny. Nemôžete uložiť prázdny zoznam.</p>
-                         <button class="bg-emerald-500 text-white py-2 px-4 rounded-xl font-semibold hover:bg-emerald-600 transition duration-200" onclick="this.parentElement.parentElement.remove()">Zavrieť</button>
-                     </div>
+                      <div class="bg-white p-6 rounded-lg shadow-xl text-center">
+                          <p class="text-lg font-semibold text-gray-800 mb-4">Zoznam je prázdny. Nemôžete uložiť prázdny zoznam.</p>
+                          <button class="bg-emerald-500 text-white py-2 px-4 rounded-xl font-semibold hover:bg-emerald-600 transition duration-200" onclick="this.parentElement.parentElement.remove()">Zavrieť</button>
+                      </div>
                  `;
                  document.body.appendChild(modal);
                  return;
@@ -658,22 +686,22 @@
 
             showCurrentListBtn.addEventListener('click', () => toggleView('current'));
             showHistoryBtn.addEventListener('click', () => toggleView('history'));
+
+            // Event listenery pre nový modal s cenou
             savePriceBtn.addEventListener('click', savePrice);
             cancelPriceBtn.addEventListener('click', hidePriceModal);
         }
 
-        // Počiatočné načítanie a vykreslenie
-        window.onload = () => {
+        // Inicializácia pri načítaní stránky
+        window.addEventListener('load', () => {
             loadData();
             renderCurrentList();
             setupEventListeners();
-        };
+        });
 
+        // Sprístupnenie funkcií pre globálny scope, ak sú použité v HTML (napr. onclick)
+        window.deleteSavedList = deleteSavedList;
+        window.printList = printList;
     </script>
 </body>
 </html>
-
-
-
-
-
